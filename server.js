@@ -1,4 +1,4 @@
-require('./client/sendReq.js')
+// require('./client/sendReq.js') - CoAP test client
 ///////////
 
 const coap = require('coap')
@@ -19,7 +19,7 @@ server.on('request', (req, res) => {
 
         default:
             console.log('some reques:', method, msg);
-            res.end('res: ', msg)
+            res.end('res: '+  msg)
             break;
     }
 
