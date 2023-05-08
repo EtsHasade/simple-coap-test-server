@@ -18,6 +18,8 @@ server.on('request', (req, res) => {
             break;
 
         default:
+            console.log('some reques:', method, msg);
+            res.end('res: ', msg)
             break;
     }
 
