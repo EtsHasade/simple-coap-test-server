@@ -6,6 +6,7 @@ const coap = require('coap')
 const server = coap.createServer()
 
 server.on('request', (req, res) => {
+
     const [domain, method, msg] = req.url.split('/')
     if (method === 'quit') process.exit(0)
 
@@ -21,7 +22,7 @@ server.on('request', (req, res) => {
 
         default:
             console.log('some request:', method, msg);
-            res.end('res: '+  msg)
+            res.end('res: ' + msg)
             break;
     }
 
@@ -29,15 +30,39 @@ server.on('request', (req, res) => {
 })
 
 function onGet(req, res, msg) {
+    const date = new Date()
+    console.log('time:', `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
+
     console.log('get request - method "GET" from', req.rsinfo?.address)
     console.log('message:', msg)
-    
-    
-    res.end('GET response >> ' + msg + '\n')
+
+    if (req.options?.observe) {
+        let counter = 0
+        res.write('oserve-response: ' + counter++)
+
+        const timeId = setInterval(() => {
+            const msg = 'oserve-response: ' + counter++
+            res.write(msg)
+            log(msg)
+            if (counter > 20) {
+                clearInterval(timeId)
+                res.end('Observeer interval stopped')
+                console.log('end observer')
+            }
+        }, 2000);
+
+    } else {
+        res.end('GET response >> ' + msg + '\n')
+    }
+
 }
 
 
 function onPut(req, res, msg) {
+    const date = new Date()
+    console.log('time:', `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
+
+
     console.log('get request - method "PUT" from', req.rsinfo?.address)
     console.log('message:', msg)
 
