@@ -10,15 +10,17 @@ server.on('request', (req, res) => {
     if (method === 'quit') process.exit(0)
 
     switch (method) {
+        case 'get':
         case 'GET':
             onGet(req, res, msg)
             break;
-        case 'post':
-            onPost(req, res, msg)
+        case 'put':
+        case 'PUT':
+            onPut(req, res, msg)
             break;
 
         default:
-            console.log('some reques:', method, msg);
+            console.log('some request:', method, msg);
             res.end('res: '+  msg)
             break;
     }
@@ -27,12 +29,19 @@ server.on('request', (req, res) => {
 })
 
 function onGet(req, res, msg) {
-    res.end('GET >> ' + msg + '\n')
+    console.log('get request - method "GET" from', req.rsinfo?.address)
+    console.log('message:', msg)
+    
+    
+    res.end('GET response >> ' + msg + '\n')
 }
 
 
-function onPost(req, res, msg) {
-    res.end('POST >> ' + msg + '\n')
+function onPut(req, res, msg) {
+    console.log('get request - method "PUT" from', req.rsinfo?.address)
+    console.log('message:', msg)
+
+    res.end('PUT response>> ' + msg + '\n')
 }
 
 
@@ -40,6 +49,6 @@ function onPost(req, res, msg) {
 const port = 5683;
 server.listen(port, () => {
     console.log('coap server listen on port coap://localhost/' + port);
-    console.log('send coap like that: "GET:msg"');
+    console.log('send coap like that: "GET/msg"');
 })
 
