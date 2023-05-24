@@ -34,16 +34,17 @@ function onGet(req, res, msg) {
     console.log('time:', `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`)
 
     console.log('get request - method "GET" from', req.rsinfo?.address)
+    console.log('get request - method "GET" from', req.options)
     console.log('message:', msg)
 
-    if (req.options?.observe) {
+    if ('Observe' in req.headers) {
         let counter = 0
         res.write('oserve-response: ' + counter++)
 
         const timeId = setInterval(() => {
             const msg = 'oserve-response: ' + counter++
             res.write(msg)
-            log(msg)
+            console.log(msg)
             if (counter > 20) {
                 clearInterval(timeId)
                 res.end('Observeer interval stopped')
