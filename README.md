@@ -6,6 +6,3 @@
 
 ```npm start```
 
-type in the cli: "GET:my message"
-
-if the server is running, the cli print out "GET >> my message"
